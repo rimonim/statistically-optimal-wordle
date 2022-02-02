@@ -48,7 +48,7 @@ The output list is 332 words long, beginning with `sissy`, `humph`, and `blush`.
 
 This is all fine and lovely, but when we're playing Wordle, we don't know what the solution is. It could be `boozy` or `tread` or any of 2,313 others. So without knowing ahead of time what the solution is, how good of a guess is `treat`?
 
-It's time to look at some probability distributions (well, density plots, but who's counting?).
+It's time to look at some probability density plots. 
 
 ``` r
 # Function to create a dataframe with how much the given guess would narrow the possibilities for each possible answer.
@@ -78,6 +78,7 @@ guess_quality_fast("treat") %>%
     labs(title = "Expected Reduction in Possible Answers for First Guess 'treat'",
          x = "Percent Reduction")
 ```
+*Side note: The fact that all 2,315 possible answers are equally likely to be the true one makes this a whole lot easier. Some might say it means this endeavor is not technically "statistics". That's ok with me.*
 
 <img src= "figures/fig2.png"/>
 
@@ -211,6 +212,87 @@ head(expected_reductions_exact, 10)
 #>  10 raine           97.10341
 
 ```
+There's been quite a bit of shifting around, but `roate` is still on top! [Roate](https://www.lawinsider.com/dictionary/roate), the cumulative net earnings after taxes available to common shareholders, adjusted for tax-affected amortization of intangibles, for the calendar quarters in each calendar year in a specified period of time divided by average shareholder’s tangible common equity! Notice also that roate's expected reduction has gone down since our randomly-sampled round, from 97.79% to 97.39%. This makes sense and is similar to regression toward the mean--the first set had some randomness and the most extreme results of that randomness were selected to be on top. The second set had no randomness and therefore no boost on the top end.
 
+There you have it. The statistically optimal Wordle starting word is `roate`.
 
+# Cmon, I wanna see the optimal Wordle playing Bot!
+
+Ok fine. Here it is:
+
+``` r
+    # This is the same as dictionary_update, but it prints the outcome of the guess with nice colors
+dictionary_update_printed <- function(guess, answer, dictionary) {
+  for (n in 1:5) {
+    if (guess[n] %in% answer){
+      if (guess[n] == answer[n]) {
+        dictionary <- dictionary[sapply(dictionary, "[", n) == guess[n]]
+        cat(paste0("\033[48;5;46m", guess[n]))
+      }else{
+        dictionary <- dictionary[sapply(dictionary, "[", n) != guess[n]
+                                 & sapply(dictionary, function(x) any(guess[n] %in% x))]
+        cat(paste0("\033[48;5;226m", guess[n]))
+      }
+    }else{
+      dictionary <- dictionary[sapply(dictionary, function(x) !any(guess[n] %in% x))]
+      cat(paste0("\033[48;5;249m", guess[n]))
+    }
+  }
+  dictionary
+}
+
+    # Returns average posterior dictionary length
+guess_quality_minimal <- function(guess, dictionary = answer_dictionary) {
+  guess <- unlist(strsplit(guess, ""))
+  distribution <- rep(NA, length(dictionary))
+  for (n in 1:length(distribution)) {
+    answer <- dictionary[[n]]
+    distribution[n] <- length(dictionary_update(guess, answer, dictionary))
+  }
+  mean(distribution)
+}
+
+  # THE BOT
+
+play <- function(answer){
+  stopifnot(length(answer) == 5)
+  # Make the first guess (always "roate") and update the dictionary
+  dictionary <- dictionary_update_printed(unlist(strsplit("roate", "")), answer, answer_dictionary)
+  cat("\n")
+  for (try in 1:5) {
+    if (length(dictionary) == 1) {
+      cat(paste0("\033[48;5;46m", paste(dictionary[[1]], collapse = "")))
+      cat("\n")
+      break
+    }
+    if (length(dictionary) == 2) {
+      if (paste(guess_dictionary[[1]], collapse = "") == paste(answer, collapse = "")){
+        dictionary <- dictionary_update_printed(dictionary[[1]], answer, dictionary)
+        cat("\n")
+        break
+      }else{
+        dictionary <- dictionary_update_printed(dictionary[[1]], answer, dictionary)
+        dictionary <- dictionary_update_printed(dictionary[[1]], answer, dictionary)
+        cat("\n")
+        break
+      }
+    }
+    guess_remainders <- rep(NA, length(guess_dictionary))
+    for (n in 1:length(guess_dictionary)) {
+      guess <- paste(guess_dictionary[[n]], collapse = "")
+      guess_remainders[n] <- guess_quality_minimal(guess, dictionary)
+    }
+    dictionary <- dictionary_update_printed(guess_dictionary[[which.min(guess_remainders)]], answer, dictionary)
+    cat("\n")
+    if (paste(guess_dictionary[[which.min(guess_remainders)]], collapse = "") == paste(answer, collapse = "")) {
+      break
+    }
+  }
+}
+```
+Obviously the bot always starts by guessing "roate". After each new guess, the expected helpfulness of each possible next guess is reassessed based on the shortened list of answer possibilities. Other than that, the whole process is the same one I've been working with all along; each guess is the one that is expected to narrow down the remaining possibilities the most.
+
+Let's see it play a few games!
+
+<img src= "figures/fig.png" width = "400"/>
 
