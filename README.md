@@ -159,7 +159,7 @@ expected_reduction_table <- expected_reduction_table %>%
 
 tail(expected_reduction_table)
 
-#>        guess       expected_reduction
+#>       guess           expected_reduction
 #> 12967 yuppy           61.77192
 #> 12968 immix           60.55162
 #> 12969 kudzu           60.28942
@@ -171,7 +171,7 @@ Here are the best first guesses:
 ``` r
 head(expected_reduction_table)
 
-#>    guess       expected_reduction
+#>   guess           expected_reduction
 #> 1 roate           97.78920
 #> 2 irate           97.73002
 #> 3 soare           97.62505
@@ -188,12 +188,29 @@ expected_reductions_exact <- data.frame(guess = rep(NA, 200),
                                        expected_reduction = rep(NA, 200))
 for (n in 1:200) {
   guess <- paste(guess_dictionary_top[[n]], collapse = "")
-  expected_reduction_table$guess[n] <- guess
+  expected_reductions_exact$guess[n] <- guess
   distribution_table <- guess_quality(guess) %>%
     mutate(dictionary_reduction = 100-(100*(posterior_dictionary_length/length(answer_dictionary))))
   expected_reductions_exact$expected_reduction[n] <- mean(distribution_table$dictionary_reduction)
 }
 
-head(expected_reduction_table$guess, n = 200)
+expected_reductions_exact <- expected_reductions_exact %>%
+  arrange(desc(expected_reduction))
+head(expected_reductions_exact, 10)
+
+#>     guess           expected_reduction
+#>  1  roate           97.38987
+#>  2  raise           97.36497
+#>  3  raile           97.35072
+#>  4  soare           97.30881
+#>  5  arise           97.24727
+#>  6  irate           97.24496
+#>  7  orate           97.24014
+#>  8  ariel           97.17980
+#>  9  arose           97.14811
+#>  10 raine           97.10341
 
 ```
+
+
+
