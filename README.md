@@ -117,7 +117,7 @@ We could even add couple more obscure anagrams:
 - aster: 96.63%
 - tares: 96.91%
 
-Ok fine, they're all pretty similar. But there is a difference!
+Ok fine, they're all pretty similar. But there is a difference! I think `e` in the fifth place is a big bonus--especially combined with `t`, `r`, and `s`-- since so many words end in -se, -te, or -re.
 
 # What's the Best Starting Word?
 
