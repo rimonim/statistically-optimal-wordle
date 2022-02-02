@@ -50,4 +50,32 @@ This is all fine and lovely, but when we're playing Wordle, we don't know what t
 
 It's time to look at some probability distributions (well, density plots, but who's counting?).
 
+``` r
+# Function to create a dataframe with how much the given guess would narrow the possibilities for each possible answer.
+guess_quality <- function(guess) {
+  guess <- unlist(strsplit(guess, ""))
+  distribution_table <- data.frame(answer = rep(NA, length(answer_dictionary)),
+                                   posterior_dictionary_length = rep(NA, length(answer_dictionary)))
+  for (n in 1:length(answer_dictionary)) {
+    answer <- answer_dictionary[[n]]
+    posterior_dictionary_length <- length(dictionary_update(guess, answer, answer_dictionary))
+    distribution_table[n, 1] <- paste(answer, collapse = "")
+    distribution_table[n, 2] <- posterior_dictionary_length
+  }
+  distribution_table
+}
 
+# Let's graph it!
+library(tidyverse)
+
+guess_quality_fast("irate") %>%
+  mutate(
+    dictionary_reduction = 100-(100*(posterior_dictionary_length/length(answer_dictionary)))
+  ) %>%
+  ggplot(aes(x = dictionary_reduction)) +
+    geom_density(size = 1) +
+    theme_classic() +
+    labs(title = "Expected Reduction in Possible Answers for First Guess 'irate'",
+         x = "Percent Reduction")
+```
+<img src= "figures/fig2.png"/>
