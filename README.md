@@ -179,5 +179,5 @@ head(expected_reduction_table)
 #> 5 ariel           97.42851
 #> 6 arise           97.42462
 ```
-Before we discuss these results, though, let's get rid of that randomness. I'm going to take just the top 100 results of our semi-randomized analysis and rerun it with the full set of possible answers. Unless the very best first guess somehow made it out of the top 100, this should give us the true, statistically optimal best guess.
+Before we discuss these results, though, let's get rid of that randomness. I'm going to take just the top 200 results of our semi-randomized analysis and rerun it with the full set of possible answers. Unless the very best first guess somehow made it out of the top 200, this should give us the true, statistically optimal best guess.
 
