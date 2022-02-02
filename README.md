@@ -89,3 +89,8 @@ That curve is so irregular that it makes me curious to see some more.
 [This article](https://edition.cnn.com/2022/02/01/us/wordle-top-strategies-winning-words-cec/index.html) recommends starting with `adieu`.
 
 <img src= "figures/fig3.png"/>
+
+What about a really terrible first guess?
+
+<img src= "figures/fig4.png"/>
+
