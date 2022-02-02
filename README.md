@@ -22,7 +22,7 @@ How good a guess is (i.e. how much does it narrow down the remaining possibiliti
 
 Here's a little function that, for a given guess, true answer, and list of currently possible answers, will give you a narrowed-down list of possible answers based on Wordle's feedback on your guess.
 ``` r
-  # input guess (5 item vector), answer (5 item vector), and prior dictionary (N x 5 matrix)
+  # input guess (5 item vector), answer (5 item vector), and prior dictionary (list of 5 item vectors)
 
 dictionary_update <- function(guess, answer, dictionary) {
   for (n in 1:5) {
@@ -39,4 +39,8 @@ dictionary_update <- function(guess, answer, dictionary) {
   }
   dictionary
 }
+```
+So now we can give exact numbers. How many possibilities are left if your first guess is `treat ` and the true answer is `boozy`?
+``` r
+dictionary_update(guess = unlist(strsplit("treat", "")), answer = unlist(strsplit("boozy", "")), dictionary = answer_dictionary)
 ```
