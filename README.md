@@ -152,3 +152,32 @@ for (n in 1:length(guess_dictionary)) {
   expected_reduction_table$expected_reduction[n] <- mean(distribution_table$dictionary_reduction)
 }
 ```
+Here are the worst first guesses:
+``` r
+expected_reduction_table <- expected_reduction_table %>%
+  arrange(desc(expected_reduction))
+
+tail(expected_reduction_table)
+
+#>        guess       expected_reduction
+#> 12967 yuppy           61.77192
+#> 12968 immix           60.55162
+#> 12969 kudzu           60.28942
+#> 12970 fuffy           57.36328
+#> 12971 jugum           56.97495
+#> 12972 qajaq           56.40821
+```
+Here are the best first guesses: 
+``` r
+head(expected_reduction_table)
+
+#>    guess       expected_reduction
+#> 1 roate           97.78920
+#> 2 irate           97.73002
+#> 3 soare           97.62505
+#> 4 later           97.47257
+#> 5 ariel           97.42851
+#> 6 arise           97.42462
+```
+Before we discuss these results, though, let's get rid of that randomness. I'm going to take just the top 100 results of our semi-randomized analysis and rerun it with the full set of possible answers. Unless the very best first guess somehow made it out of the top 100, this should give us the true, statistically optimal best guess.
+
