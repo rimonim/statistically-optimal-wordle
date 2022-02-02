@@ -121,4 +121,34 @@ Ok fine, they're all pretty similar. But there is a difference! I think `e` in t
 
 # What's the Best Starting Word?
 
+Now we have our metric: What percentage of possible answers do we expect to rule out with this guess? All we have to do is apply this to every one of 12,972 legal guesses! (Yes, there are way more legal guesses than there are possible answers). 
 
+The problem here is that for each one of those 12,972 legal guesses, the computer will have to test out 2,315 possible answers to see how helpful the guess is in each instance. 12,972 * 2,315 = 30,030,180. Combined with my lack of CS skills and my five-year-old computer, this amounts to a more waiting than I'd like. To speed this up a bit, let's only look at a random sample of 100 possible answers for each of the 12,972 guesses. It'll introduce a bit of randomness into the results, but we can fix that later.
+
+``` r
+# Faster guess assessment
+guess_quality_fast <- function(guess) {
+  guess <- unlist(strsplit(guess, ""))
+  answer_sample <- answer_dictionary[sample(1:length(answer_dictionary), 100)]
+  distribution_table <- data.frame(answer = rep(NA, length(answer_sample)),
+                                   posterior_dictionary_length = rep(NA, length(answer_sample)))
+  for (n in 1:length(answer_sample)) {
+    answer <- answer_sample[[n]]
+    posterior_dictionary_length <- length(dictionary_update(guess, answer, answer_dictionary))
+    distribution_table[n, 1] <- paste(answer, collapse = "")
+    distribution_table[n, 2] <- posterior_dictionary_length
+  }
+  distribution_table
+}
+
+# Make dataframe of expected answer narrowing
+expected_reduction_table <- data.frame(guess = rep(NA, length(guess_dictionary)),
+                                       expected_reduction = rep(NA, length(guess_dictionary)))
+for (n in 1:length(guess_dictionary)) {
+  guess <- paste(guess_dictionary[[n]], collapse = "")
+  expected_reduction_table$guess[n] <- guess
+  distribution_table <- guess_quality_fast(guess) %>%
+    mutate(dictionary_reduction = 100-(100*(posterior_dictionary_length/length(answer_dictionary))))
+  expected_reduction_table$expected_reduction[n] <- mean(distribution_table$dictionary_reduction)
+}
+```
