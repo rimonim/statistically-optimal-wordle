@@ -21,3 +21,22 @@ How much better? It's time to look at some probability distributions.
 How good a guess is (i.e. how much does it narrow down the remaining possibilities) depends on what the actual answer is. For example, if your first guess is `treat` and the true answer is `tread`, you're only left with one possibility. There is only one word that begins with `trea-`and does not end in `t`, and it's `tread`. But it your first guess is `treat ` and the true answer is `boozy`, all you know is that the word doesn't include `a`, `e`, `r`, or `t`. 
 
 Here's a little function that, for a given guess, true answer, and list of currently possible answers, will give you a narrowed-down list of possible answers based on Wordle's feedback on your guess.
+``` r
+  # input guess (5 item vector), answer (5 item vector), and prior dictionary (N x 5 matrix)
+
+dictionary_update <- function(guess, answer, dictionary) {
+  for (n in 1:5) {
+    if (guess[n] %in% answer){
+      if (guess[n] == answer[n]) {
+        dictionary <- dictionary[sapply(dictionary, "[", n) == guess[n]]
+      }else{
+        dictionary <- dictionary[sapply(dictionary, "[", n) != guess[n]
+                                 & sapply(dictionary, function(x) any(guess[n] %in% x))]
+      }
+    }else{
+      dictionary <- dictionary[sapply(dictionary, function(x) !any(guess[n] %in% x))]
+    }
+  }
+  dictionary
+}
+```
