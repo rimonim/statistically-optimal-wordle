@@ -40,7 +40,7 @@ dictionary_update <- function(guess, answer, dictionary) {
   dictionary
 }
 ```
-So now we can give exact numbers. How many possibilities are left if your first guess is `treat ` and the true answer is `boozy`?
+So now we can give exact numbers. How many possibilities are left if your first guess is `treat` and the true answer is `boozy`?
 ``` r
 dictionary_update(guess = unlist(strsplit("treat", "")), answer = unlist(strsplit("boozy", "")), dictionary = answer_dictionary)
 ```
@@ -68,14 +68,23 @@ guess_quality <- function(guess) {
 # Let's graph it!
 library(tidyverse)
 
-guess_quality_fast("irate") %>%
+guess_quality_fast("treat") %>%
   mutate(
     dictionary_reduction = 100-(100*(posterior_dictionary_length/length(answer_dictionary)))
   ) %>%
   ggplot(aes(x = dictionary_reduction)) +
     geom_density(size = 1) +
     theme_classic() +
-    labs(title = "Expected Reduction in Possible Answers for First Guess 'irate'",
+    labs(title = "Expected Reduction in Possible Answers for First Guess 'treat'",
          x = "Percent Reduction")
 ```
+
 <img src= "figures/fig2.png"/>
+
+As anyone who has taken an introductory statistics course knows, the curve depicted above is most certainly *not* normal. On the whole, `treat` is clearly a good first guess, with the highest density of possible outcomes up toward 98% reduction, and the worst possible outcome around 85%. Presumably that's because about 85% of words in the Wordle dictionary include the letters `a`, `e`, `r`, or `t` and are therefore ruled out if the correct answer turns out not to include any of them.
+In between the extremes though, it looks like you're very unlikely to get an 87% reduction, much more likely to get a 92% reduction, and then less likely again to get a 95% reduction.
+
+That curve is so irregular that it makes me curious to see some more.
+
+[This article](https://edition.cnn.com/2022/02/01/us/wordle-top-strategies-winning-words-cec/index.html) recommends starting with `adieu`.
+
