@@ -294,13 +294,8 @@ Obviously the bot always starts by guessing "roate". After each new guess, the e
 
 Let's see it play a few games!
 
-<img src= "figures/fig10.png"/> 
-<img src= "figures/fig11.png"/>
-<img src= "figures/fig12.png"/>
-<img src= "figures/fig13.png"/>
-<img src= "figures/fig14.png"/>
-<img src= "figures/fig15.png"/>
-<img src= "figures/fig16.png"/>
-<img src= "figures/fig17.png"/>
+<img src= "figures/fig10.png"/> <img src= "figures/fig11.png"/> <img src= "figures/fig12.png"/>
+<img src= "figures/fig13.png"/> <img src= "figures/fig14.png"/> <img src= "figures/fig15.png"/> 
+<img src= "figures/fig16.png"/> <img src= "figures/fig17.png"/>
 
 
