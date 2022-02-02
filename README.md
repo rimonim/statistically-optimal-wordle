@@ -16,7 +16,7 @@ I went on a lot of long roadtrips as a kid, and the most popular game in our fam
 
 Since Wordle doesn't allow you to guess categories--only individual five-letter words--the narrowing-down game is much trickier than in 20 Questions. On the other hand, Wordle gives you a whole lot more feedback than a yes-or-no answer. Wheras in 20 Questions the optimal question narrows the possibilities by a half, in Wordle we should be able to do much better than that.
 
-How much better? It's time to look at some probability distributions.
+How much better? 
 
 How good a guess is (i.e. how much does it narrow down the remaining possibilities) depends on what the actual answer is. For example, if your first guess is `treat` and the true answer is `tread`, you're only left with one possibility. There is only one word that begins with `trea-`and does not end in `t`, and it's `tread`. But it your first guess is `treat ` and the true answer is `boozy`, all you know is that the word doesn't include `a`, `e`, `r`, or `t`. 
 
@@ -44,3 +44,10 @@ So now we can give exact numbers. How many possibilities are left if your first 
 ``` r
 dictionary_update(guess = unlist(strsplit("treat", "")), answer = unlist(strsplit("boozy", "")), dictionary = answer_dictionary)
 ```
+The output list is 332 words long, beginning with `sissy`, `humph`, and `blush`. That's actually not too bad, given that Wordle's list of possible answers (as scraped from their website and represented above as "answer_dictionary") has 2,315 words. That's an 85.6% reduction!
+
+This is all fine and lovely, but when we're playing Wordle, we don't know what the solution is. It could be `boozy` or `tread` or any of 2,313 others. So without knowing ahead of time what the solution is, how good of a guess is `treat`?
+
+It's time to look at some probability distributions (well, density plots, but who's counting?).
+
+
