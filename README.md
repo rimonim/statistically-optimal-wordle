@@ -181,3 +181,19 @@ head(expected_reduction_table)
 ```
 Before we discuss these results, though, let's get rid of that randomness. I'm going to take just the top 200 results of our semi-randomized analysis and rerun it with the full set of possible answers. Unless the very best first guess somehow made it out of the top 200, this should give us the true, statistically optimal best guess.
 
+``` r
+guess_dictionary_top <- strsplit(head(expected_reduction_table$guess, n = 200), "")
+
+expected_reductions_exact <- data.frame(guess = rep(NA, 200),
+                                       expected_reduction = rep(NA, 200))
+for (n in 1:200) {
+  guess <- paste(guess_dictionary_top[[n]], collapse = "")
+  expected_reduction_table$guess[n] <- guess
+  distribution_table <- guess_quality(guess) %>%
+    mutate(dictionary_reduction = 100-(100*(posterior_dictionary_length/length(answer_dictionary))))
+  expected_reductions_exact$expected_reduction[n] <- mean(distribution_table$dictionary_reduction)
+}
+
+head(expected_reduction_table$guess, n = 200)
+
+```
