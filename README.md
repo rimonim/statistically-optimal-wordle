@@ -90,9 +90,17 @@ That curve is so irregular that it makes me curious to see some more.
 
 <img src= "figures/fig3.png"/>
 
-
+Huh. Two peaks. Looks like you have about equal chances of adieu being either a super super helpful guess or a measly very helpful guess. Your worst outcome is less likely, and is still not bad at 87.5%. 
 
 What about a really terrible first guess?
 
 <img src= "figures/fig4.png"/>
+
+That about checks out. Your most likely single outcome here is that none of the letters of `boozy` are in the answer, in which case you've ruled out about half. But it's a coin flip, because there are some possible answers that are super similar to `boozy`, and if one of those is the answer you've made a lot of progress with your risky first guess.
+
+I think the most interesting thing about these charts is the spread. Some guesses have a worst-case scenario that's actually pretty good, but above that it's a bit of a tossup. That's what we saw with `adieu`. On the other hand we saw `treat`, which is on the whole worse than `adieu` (and has a worse worst-case scenario) but which carries a greater probability of getting really close, with possibility reduction in the 98% range. Ok, maybe these aren't the best examples ever, but the point is: Are you playing for the best Wordle batting average or are you playing for a few really, spectacularly good games? In a few cases, it's possible that there's a high-stakes Wordle player would opt for the guess with the biggest mound all the way to the right of the graph, regardless of how long the tail is in the other direction.
+
+Before moving on to real recommendations, I want to play with these graphs a little bit more. I claimed earlier that letter order matters a lot and that it's a mistake to reduce the best-first-guess problem to a letter frequency contest. Let's test that claim now.
+
+
 
