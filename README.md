@@ -102,5 +102,23 @@ I think the most interesting thing about these charts is the spread. Some guesse
 
 Before moving on to real recommendations, I want to play with these graphs a little bit more. I claimed earlier that letter order matters a lot and that it's a mistake to reduce the best-first-guess problem to a letter frequency contest. Let's test that claim now.
 
+<img src= "figures/fig5.png" width = "400"/> <img src= "figures/fig6.png" width = "400"/>
+<img src= "figures/fig9.png" width = "400"/> <img src= "figures/fig8.png" width = "400"/>
+
+`rates`, `stare`, `resat`, and `taser` all have the same five letters. We can see that their worst-case scenarios are all identical. This makes sense - the worst case scenario is that none of those letters are anywhere in the word. But the curves above that worst-case scenario are different. Which is the best? A conservative Wordle player might wish to know which has the highest average reduction. In other words, how much does each guess narrow our possibilities down, on average? Let's see.
+
+- rates: 96.83%
+- stare: 96.92%
+- resat: 96.72%
+- taser: 96.92%
+
+We could even add couple more obscure anagrams:
+
+- aster: 96.63%
+- tares: 96.91%
+
+Ok fine, they're all pretty similar. But there is a difference!
+
+# What's the Best Starting Word?
 
 
