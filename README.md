@@ -10,6 +10,11 @@ Around the Internet, strategy articles abound with titles like ["THE 20 BEST WOR
 
 Pretty much all of these articles are thinking about letter frequency; the best starting word is the one that has all the highest frequency letters in the dictionary. This is a pretty tempting way to go. In fact, if Wordle only told you whether or not each letter was in the target word, it might be pretty close to optimal. The thing is, Wordle also tells you about placement. If a letter is green, you know it's in that place. If it's yellow, you know it's not in that place. This is really valuable information and it would be a shame to throw it out. Unfortunately, it also makes the whole thing a lot more complicated. For example, I bet words with `t`s in the fifth place are better guesses than words with `t`s in the third place. Since more words in the dictionary have `t` in the fifth place, you'll rule out a lot more if it's not there, plus you're more likely to hit the jackpot with a green tile.
 
+So let's start by looking at some letter frequencies in the Wordle dictionary of possible answers (as scraped from their website and represented below as "answer_dictionary"). This time though, let's pay attention to where the letters are in the word.
+``` r
+
+```
+
 As long as we're allowing computers to help us with this guessing game, let's try to get straight to the probabilities involved instead of stopping at frequencies and saying "good enough".
 
 I went on a lot of long roadtrips as a kid, and the most popular game in our family car was "20 Questions". One person thinks of a specific thing--a species of animal, a place, a household appliance--and everyone else has to ask yes-or-no questions to try to guess what that person is thinking of. If they can't get it after 20 questions, the thinker wins. Anyone who has spent any time as a guesser in 20 Questions knows that you shouldn't actually start thinking about what the specific thing is until there are only two possible options of what it could be. Before that, your goal is to narrow down the possibilities as much as possible.
@@ -44,7 +49,7 @@ So now we can give exact numbers. How many possibilities are left if your first 
 ``` r
 dictionary_update(guess = unlist(strsplit("treat", "")), answer = unlist(strsplit("boozy", "")), dictionary = answer_dictionary)
 ```
-The output list is 332 words long, beginning with `sissy`, `humph`, and `blush`. That's actually not too bad, given that Wordle's list of possible answers (as scraped from their website and represented above as "answer_dictionary") has 2,315 words. Going from 2,315 possible answers before you start to 332 possible answers after the first guess is an 85.6% reduction!
+The output list is 332 words long, beginning with `sissy`, `humph`, and `blush`. That's actually not too bad, given that Wordle's list of possible answers has 2,315 words. Going from 2,315 possible answers before you start to 332 possible answers after the first guess is an 85.6% reduction!
 
 This is all fine and lovely, but when we're playing Wordle, we don't know what the solution is. It could be `boozy` or `tread` or any of 2,313 others. So without knowing ahead of time what the solution is, how good of a guess is `treat`?
 
@@ -302,8 +307,7 @@ Let's see it play a few games!
 <img src= "figures/fig13.png" width = "150"/> <img src= "figures/fig14.png" width = "150"/> <img src= "figures/fig15.png" width = "150"/> 
 <img src= "figures/fig16.png" width = "150"/> <img src= "figures/fig17.png" width = "150"/> <img src= "figures/fig18.png" width = "150"/> 
 <img src= "figures/fig19.png" width = "150"/> <img src= "figures/fig20.png" width = "150"/> <img src= "figures/fig21.png" width = "150"/> 
-<img src= "figures/fig22.png" width = "150"/>
 
 Can we learn any sage advice from this digital Wordle master? Just by looking at the games, it's hard to say. I'm surprised by its willingness to use rarish letters in the second guess, but that doesn't amount to a general statement about what kind of words make good second guesses. If we really want to learn some grandmaster-level Wordle skills, we'll have to return to our probability density plots.
 
-
+Here's one for our champion first guess:
