@@ -10,11 +10,34 @@ Around the Internet, strategy articles abound with titles like ["THE 20 BEST WOR
 
 Pretty much all of these articles are thinking about letter frequency; the best starting word is the one that has all the highest frequency letters in the dictionary. This is a pretty tempting way to go. In fact, if Wordle only told you whether or not each letter was in the target word, it might be pretty close to optimal. The thing is, Wordle also tells you about placement. If a letter is green, you know it's in that place. If it's yellow, you know it's not in that place. This is really valuable information and it would be a shame to throw it out. Unfortunately, it also makes the whole thing a lot more complicated. For example, I bet words with `t`s in the fifth place are better guesses than words with `t`s in the third place. Since more words in the dictionary have `t` in the fifth place, you'll rule out a lot more if it's not there, plus you're more likely to hit the jackpot with a green tile.
 
-So let's start by looking at some letter frequencies in the Wordle dictionary of possible answers (as scraped from their website and represented below as "answer_dictionary"). This time though, let's pay attention to where the letters are in the word.
-``` r
+So let's start by looking at some letter frequencies in the Wordle dictionary of possible answers (as scraped from their website and represented below as "answer_dictionary_vec"). This time though, let's pay attention to where the letters are in the word.
 
+``` r
+places <- data.frame(letter = answer_dictionary_vec) %>%
+  separate(letter, into = c("blank", "1", "2", "3", "4", "5"), sep = "") %>%
+  select(2:6) %>%
+  pivot_longer(cols = 1:5, names_to = "place", values_to = "letter") %>%
+  count(place, letter)
+
+places %>%
+  group_by(place) %>%
+  arrange(desc(n), .by_group = T) %>%
+  top_n(10, n) %>%
+  ungroup() %>%
+  mutate(letter = factor(paste(letter, place, sep = "__"), levels = rev(paste(letter, place, sep = "__")))) %>%
+  ggplot(aes(letter, n)) +
+    geom_bar(stat = "identity", show.legend = FALSE) +
+    facet_wrap(~place, scales = "free") +
+    coord_flip() +
+    scale_x_discrete(labels = function(x) gsub("__.+$", "", x)) +
+    theme_minimal() +
+    labs(title = "Letter Frequencies by Place", x = NULL, y = "Occurences")
 ```
 
+The top ten most common letters in each letter-place:
+<img src= "figures/fig24.png"/>
+
+This is interesting. `e` is the most common (and therefore most useful in a guess) for the last two letters of the word. For the first letter though, we should prefer a consonant. `s` is almost never at the end because Wordle answers are never plurals (even though plurals are allowed in guesses). We could start developing a scoring system to find the words with the most common letters in their rightful places, but I have a better idea.
 As long as we're allowing computers to help us with this guessing game, let's try to get straight to the probabilities involved instead of stopping at frequencies and saying "good enough".
 
 I went on a lot of long roadtrips as a kid, and the most popular game in our family car was "20 Questions". One person thinks of a specific thing--a species of animal, a place, a household appliance--and everyone else has to ask yes-or-no questions to try to guess what that person is thinking of. If they can't get it after 20 questions, the thinker wins. Anyone who has spent any time as a guesser in 20 Questions knows that you shouldn't actually start thinking about what the specific thing is until there are only two possible options of what it could be. Before that, your goal is to narrow down the possibilities as much as possible.
@@ -331,4 +354,4 @@ Here are the top 5 most likely outcomes of the first guess `roate`, along with t
 4.  <img src= "figures/naval.png" width = "100"/> (4.8% chance).  Optimal second guess: `lysin`
 5.  <img src= "figures/bench.png" width = "100"/> (4.6% chance).  Optimal second guess: `silen`
 
-So there you are. If you've ever looked longingly at a chess grandmaster and thought, "I wish *I* could just memorize all the best openings instead of playing like a normal person", your wish has come true.
+So there you are. If you've ever looked longingly at a chess grandmaster and thought, "I wish **I** could just memorize all the best openings instead of playing like a normal person", your wish has come true.
