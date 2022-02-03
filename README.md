@@ -311,3 +311,22 @@ Let's see it play a few games!
 Can we learn any sage advice from this digital Wordle master? Just by looking at the games, it's hard to say. I'm surprised by its willingness to use rarish letters in the second guess, but that doesn't amount to a general statement about what kind of words make good second guesses. If we really want to learn some grandmaster-level Wordle skills, we'll have to return to our probability density plots.
 
 Here's one for our champion first guess:
+
+<img src= "figures/fig22.jpeg"/>
+
+Looks pretty good, but still not clear how to squeeze strategy from this. The problem is that I have no idea how those peaks and valleys correspond to actual situations we might face in the Wordle battlefield. I don't want to know what by what percentages I'm likely to narrow the search--I want to know what second guesses I'm likely to need after `roate`!
+It's time to reveal the ugly monster lurking behind the density plot: the bar chart.
+
+<img src= "figures/fig23.jpeg"/>
+
+And there you are. There are a few discrete outcomes that are more likely than the other ones. Well what are they? And what does the bot say to do in those situations?
+
+As I've mentioned before, the tallest bar all the way to the left (i.e. the single most likely outcome) is definitely the case in which none of the letters in `roate` are in the target word - you turn up with all black squares. In that case, the computer says that the optimal next guess is `slimy`.
+
+Here are the top 5 most likely outcomes of the first guess `roate`, along with the optimal second guess:
+
+1.  <img src= "figures/sissy.png" width = "100"/> (8.4% chance)  optimal second guess: `slimy`
+2.  <img src= "figures/colon.png" width = "100"/> (6.1% chance)  optimal second guess: `bludy`
+3.  <img src= "figures/stink.png" width = "100"/> (5.4% chance)  optimal second guess: `shunt`
+4.  <img src= "figures/naval.png" width = "100"/> (4.8% chance)  optimal second guess: `lysin`
+5.  <img src= "figures/bench.png" width = "100"/> (4.6% chance)  optimal second guess: `silen`
