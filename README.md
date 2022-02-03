@@ -13,6 +13,9 @@ Pretty much all of these articles are thinking about letter frequency; the best 
 So let's start by looking at some letter frequencies in the Wordle dictionary of possible answers (as scraped from their website and represented below as "answer_dictionary_vec"). This time though, let's pay attention to where the letters are in the word.
 
 ``` r
+library(tidyverse)
+library(tidytext)
+
 places <- data.frame(letter = answer_dictionary_vec) %>%
   separate(letter, into = c("blank", "1", "2", "3", "4", "5"), sep = "") %>%
   select(2:6) %>%
@@ -37,7 +40,7 @@ places %>%
 The top ten most common letters in each letter-place:
 <img src= "figures/fig24.png"/>
 
-This is interesting. `e` is the most common (and therefore most useful in a guess) for the last two letters of the word. For the first letter though, we should prefer a consonant. `s` is almost never at the end because Wordle answers are never plurals (even though plurals are allowed in guesses). We could start developing a scoring system to find the words with the most common letters in their rightful places, but I have a better idea.
+This is interesting. `e` is the most common (and therefore most useful in a guess) for the last two letters of the word. For the first letter though, we should prefer a consonant like `s`. `s` is almost never at the end because Wordle answers are never plurals (even though plurals are allowed in guesses). We could start developing a scoring system to find the words with the most common letters in their rightful places, but I have a better idea.
 As long as we're allowing computers to help us with this guessing game, let's try to get straight to the probabilities involved instead of stopping at frequencies and saying "good enough".
 
 I went on a lot of long roadtrips as a kid, and the most popular game in our family car was "20 Questions". One person thinks of a specific thing--a species of animal, a place, a household appliance--and everyone else has to ask yes-or-no questions to try to guess what that person is thinking of. If they can't get it after 20 questions, the thinker wins. Anyone who has spent any time as a guesser in 20 Questions knows that you shouldn't actually start thinking about what the specific thing is until there are only two possible options of what it could be. Before that, your goal is to narrow down the possibilities as much as possible.
