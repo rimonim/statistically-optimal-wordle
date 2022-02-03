@@ -296,6 +296,8 @@ Let's see it play a few games!
 
 <img src= "figures/fig10.png"/> <img src= "figures/fig11.png"/> <img src= "figures/fig12.png"/>
 <img src= "figures/fig13.png"/> <img src= "figures/fig14.png"/> <img src= "figures/fig15.png"/> 
-<img src= "figures/fig16.png"/> <img src= "figures/fig17.png"/>
+<img src= "figures/fig16.png"/> <img src= "figures/fig17.png"/> <img src= "figures/fig18.png"/> 
+<img src= "figures/fig19.png"/> <img src= "figures/fig20.png"/> <img src= "figures/fig21.png"/> 
+<img src= "figures/fig22.png"/>
 
 
