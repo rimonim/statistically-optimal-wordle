@@ -259,12 +259,15 @@ play <- function(answer){
   # Make the first guess (always "roate") and update the dictionary
   dictionary <- dictionary_update_printed(unlist(strsplit("roate", "")), answer, answer_dictionary)
   cat("\n")
+  # Loop for the other 5 guesses
   for (try in 1:5) {
+    # If there's only one option left, guess it and end the game.
     if (length(dictionary) == 1) {
       cat(paste0("\033[48;5;46m", paste(dictionary[[1]], collapse = "")))
       cat("\n")
       break
     }
+    # If there are two options left, guess the first. If that's the answer, end the game. If not, guess the next one and end the game.
     if (length(dictionary) == 2) {
       if (paste(guess_dictionary[[1]], collapse = "") == paste(answer, collapse = "")){
         dictionary <- dictionary_update_printed(dictionary[[1]], answer, dictionary)
@@ -277,6 +280,7 @@ play <- function(answer){
         break
       }
     }
+    # Loop through possible guesses and evaluate how many possible answers we would expected to have after guessing them. Then pick the lowest one and guess it.
     guess_remainders <- rep(NA, length(guess_dictionary))
     for (n in 1:length(guess_dictionary)) {
       guess <- paste(guess_dictionary[[n]], collapse = "")
@@ -294,10 +298,12 @@ Obviously the bot always starts by guessing "roate". After each new guess, the e
 
 Let's see it play a few games!
 
-<img src= "figures/fig10.png"/> <img src= "figures/fig11.png"/> <img src= "figures/fig12.png"/>
-<img src= "figures/fig13.png"/> <img src= "figures/fig14.png"/> <img src= "figures/fig15.png"/> 
-<img src= "figures/fig16.png"/> <img src= "figures/fig17.png"/> <img src= "figures/fig18.png"/> 
-<img src= "figures/fig19.png"/> <img src= "figures/fig20.png"/> <img src= "figures/fig21.png"/> 
-<img src= "figures/fig22.png"/>
+<img src= "figures/fig10.png" width = "150"/> <img src= "figures/fig11.png" width = "150"/> <img src= "figures/fig12.png" width = "150"/>
+<img src= "figures/fig13.png" width = "150"/> <img src= "figures/fig14.png" width = "150"/> <img src= "figures/fig15.png" width = "150"/> 
+<img src= "figures/fig16.png" width = "150"/> <img src= "figures/fig17.png" width = "150"/> <img src= "figures/fig18.png" width = "150"/> 
+<img src= "figures/fig19.png" width = "150"/> <img src= "figures/fig20.png" width = "150"/> <img src= "figures/fig21.png" width = "150"/> 
+<img src= "figures/fig22.png" width = "150"/>
+
+Can we learn any sage advice from this digital Wordle master? Just by looking at the games, it's hard to say. I'm surprised by its willingness to use rarish letters in the second guess, but that doesn't amount to a general statement about what kind of words make good second guesses. If we really want to learn some grandmaster-level Wordle skills, we'll have to return to our probability density plots.
 
 
