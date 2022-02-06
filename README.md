@@ -295,7 +295,7 @@ play <- function(answer){
     }
     # If there are two options left, guess the first. If that's the answer, end the game. If not, guess the next one and end the game.
     if (length(dictionary) == 2) {
-      if (paste(guess_dictionary[[1]], collapse = "") == paste(answer, collapse = "")){
+      if (paste(dictionary[[1]], collapse = "") == paste(answer, collapse = "")){
         dictionary <- dictionary_update_printed(dictionary[[1]], answer, dictionary)
         cat("\n")
         break
