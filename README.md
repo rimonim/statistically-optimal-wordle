@@ -99,7 +99,7 @@ guess_quality <- function(guess) {
 # Let's graph it!
 library(tidyverse)
 
-guess_quality_fast("treat") %>%
+guess_quality("treat") %>%
   mutate(
     dictionary_reduction = 100-(100*(posterior_dictionary_length/length(answer_dictionary)))
   ) %>%
@@ -159,18 +159,15 @@ The problem here is that for each one of those 12,972 legal guesses, the compute
 
 ``` r
 # Faster guess assessment
-guess_quality_fast <- function(guess) {
+guess_quality_minimal_fast <- function(guess, dictionary = answer_dictionary) {
   guess <- unlist(strsplit(guess, ""))
   answer_sample <- answer_dictionary[sample(1:length(answer_dictionary), 100)]
-  distribution_table <- data.frame(answer = rep(NA, length(answer_sample)),
-                                   posterior_dictionary_length = rep(NA, length(answer_sample)))
+  distribution <- rep(NA, length(answer_sample))
   for (n in 1:length(answer_sample)) {
     answer <- answer_sample[[n]]
-    posterior_dictionary_length <- length(dictionary_update(guess, answer, answer_dictionary))
-    distribution_table[n, 1] <- paste(answer, collapse = "")
-    distribution_table[n, 2] <- posterior_dictionary_length
+    distribution[n] <- length(dictionary_update(guess, answer, dictionary))
   }
-  distribution_table
+  mean(distribution)
 }
 
 # Make dataframe of expected answer narrowing
@@ -179,9 +176,7 @@ expected_reduction_table <- data.frame(guess = rep(NA, length(guess_dictionary))
 for (n in 1:length(guess_dictionary)) {
   guess <- paste(guess_dictionary[[n]], collapse = "")
   expected_reduction_table$guess[n] <- guess
-  distribution_table <- guess_quality_fast(guess) %>%
-    mutate(dictionary_reduction = 100-(100*(posterior_dictionary_length/length(answer_dictionary))))
-  expected_reduction_table$expected_reduction[n] <- mean(distribution_table$dictionary_reduction)
+  expected_reduction_table$expected_reduction[n] <- 100-(100*(guess_quality_minimal_fast/length(answer_dictionary)))
 }
 ```
 Here are the worst first guesses:
